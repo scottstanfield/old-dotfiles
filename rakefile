@@ -1,0 +1,189 @@
+require 'rake'
+
+if defined? Rake::TaskManager.record_task_metadata
+  Rake::TaskManager.record_task_metadata = true
+end
+
+DEST = "#{ENV['HOME']}/home"			# normally just ENV['HOME']
+
+desc "install all the things!"
+task install: [:dotfiles ] do
+	sh 'cowsay finished'
+end
+
+task :default do
+  Rake::application.options.show_tasks = :tasks  
+  Rake::application.options.show_task_pattern = //
+  Rake::application.display_tasks_and_comments
+end
+
+desc "link the hidden dotfiles"
+task :dotfiles do |task|
+	putc task.comment
+
+  replace_all  = false
+  files        = Dir['*'] - %w[.git .gitignore oh-my-zsh default-gems Rakefile README.md LICENSE]
+  files = Rake::FileList["*"].exclude(/rake/i)
+	files.exclude(*%w[readme.md .git .gitignore])
+
+  files.each do |file|
+    if File.exist?(File.join(DEST, ".#{file.sub(/\.erb$/, '')}"))
+      if File.identical?(file, File.join(DEST, ".#{file.sub(/\.erb$/, '')}"))
+        puts "skipping identical: ~/.#{file.sub(/\.erb$/, '')}"
+      elsif replace_all
+        replace_file(file)
+      else
+        print "overwrite ~/.#{file.sub(/\.erb$/, '')}? [ynaq] "
+        case $stdin.gets.chomp
+        when 'a'
+          replace_all = true
+          replace_file(file)
+        when 'y'
+          replace_file(file)
+        when 'q'
+          exit
+        else
+          puts "skipping ~/.#{file.sub(/\.erb$/, '')}"
+        end
+      end
+    else
+      link_file(file, '.')
+    end
+  end
+end
+
+desc "Install R and RStudio"
+task :rlanguage do |task|
+	putc task.comment
+
+end
+
+task :brew => [:xcode] do |task|
+	putc task.comment
+	sh "brew -v" do |ok, res|
+		if ! ok
+			puts "brew not found, installing:"
+			sh %Q{ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/linuxbrew/go/install)"}
+		end
+	end
+end
+
+desc "install brew packages"
+task :brew_packages => [:brew] do |task|
+	putc task.comment
+  brew(*%w(cowsay git wget gist hub 
+			 tree p7zip
+			 source-highlight zsh vim the_silver_searcher))
+end
+
+desc "install node"
+task :node => [:brew] do |task|
+	putc task.comment
+	brew("node n")
+end
+
+desc "install cask"
+task :cask => [:brew] do |task|
+	putc task.comment
+  brew(*%w(caskroom/cask/brew-cask))
+end
+
+desc "install cask packages"
+task :cask_packages do |task|
+	putc task.comment
+  cask(*%w(
+	  google-chrome
+		onepassword
+		java
+    atom
+    betterzipql
+    dropbox
+    iterm2
+    mailplane mojibar
+    pgadmin3
+    qlcolorcode qlimagesize quicklook-csv quicklook-json qlmarkdown qlstephen
+		qlcolorcode qlstephen qlmarkdown quicklook-json qlprettypatch quicklook-csv betterzipql qlimagesize webpquicklook suspicious-package
+    time-sink textexpander
+    vagrant virtualbox
+  ))
+end
+
+desc "configure iterm: color, fonts and more"
+task :iterm do |cask|
+	putc task.comment
+end
+
+desc "Installing XCode command-line tools"
+task :xcode do |task|
+	putc task.comment
+	# If running xcode-select fails to give version, it's not installed
+  sh "xcode-select -v" do |ok, res|
+    if ! ok
+			puts "xcode not found, installing:"
+			# sh("xcode-select --install")
+    end
+  end
+end
+
+desc "Change shell to zsh"
+task :zsh => [:brew] do |task|
+	putc task.comment
+  if ENV['SHELL'] !~ /zsh/
+    brew('zsh')
+    zsh = `command -v zsh`
+    sh %Q{echo '#{zsh}' | sudo tee -a /etc/shells}
+    sh %Q{chsh -s #{zsh}}
+  end
+end
+
+desc "Install ruby"
+task :ruby => [:brew] do |task|  
+	putc task.comment
+	# http://ryanbigg.com/2015/06/mac-os-x-ruby-ruby-install-chruby-and-you/
+	brew("ruby-install chruby")
+end
+
+desc "Install vim plugins"
+task :vim_plug do |task|
+	putc task.comment
+
+	# Create ~/.vim folder
+	FileUtils.mkdir_p "#{DEST}/.vim"
+	
+	# Download plugin
+  url = "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+  command = "wget -q #{url} -O #{DEST}/.vim/plug.vim"
+  sh command do |ok, res|
+    if ! ok
+      puts "Download of #{url} failed with exit code: #{res.exitstatus}"
+    end
+  end
+
+	# Launch vim to load plugins
+	sh "vim +PlugInstall +qall"
+end
+
+desc "Install homebrew"
+
+def putc(*args)
+  puts "\e[1;31m#{args.join(' ')}\e[m"
+end
+
+def brew(*args)
+  sh %Q{brew install #{args.join(' ')}}
+end
+
+def cask(*args)
+  sh %{brew cask install #{args.join(' ')}}
+end
+
+def link_file(file, prefix, path = DEST)
+	puts "linking #{path}/#{prefix}#{file}"
+	system %Q{ln -s "$PWD/#{file}" "#{path}/#{prefix}#{file}"}
+end
+
+def replace_file(file, prefix = ".", path = ENV["HOME"])
+	system %Q{rm -rf "#{path}/#{prefix}#{file.sub(/\.erb$/, '')}"}
+	link_file(file)
+end
+
