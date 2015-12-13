@@ -5,9 +5,11 @@ if defined? Rake::TaskManager.record_task_metadata
 end
 
 DEST = "#{ENV['HOME']}/home"			# normally just ENV['HOME']
+Rake.verbose(true)			# prevent `sh` command from echoing
+Rake.nowrite(true)			# don't actually run the `sh` command
 
 desc "install all the things!"
-task install: [:dotfiles ] do
+task :install do
 	sh 'cowsay finished'
 end
 
@@ -174,7 +176,43 @@ task :vim_plug do |task|
 	sh "vim +PlugInstall +qall"
 end
 
-desc "Install homebrew"
+desc "remove everything"
+task :uninstall do
+	putc "Are you sure you want to remove everything? If so, type 'yes'"
+	case $stdin.gets.chomp
+	when 'n'
+		exit
+	when 'yes'
+		remove_everything()
+	end
+
+end
+
+def remove_everything()
+	putc "removing everything!"
+
+  Dir.chdir(`brew --prefix`.chomp) do
+    system %Q{git checkout master}
+    system %Q{git ls-files -z | pbcopy}
+    system %Q{rm -rf Cellar}
+    system %Q{bin/brew prune}
+    system %Q{pbpaste | xargs -0 rm}
+    system %Q{rm -r Library/Homebrew Library/Aliases Library/Formula Library/Contributions}
+    system %Q{test -d Library/LinkedKegs && rm -r Library/LinkedKegs}
+    system %Q{rmdir -p bin Library share/man/man1 2> /dev/null}
+    system %Q{rm -rf .git ~/Library/Caches/Homebrew ~/Library/Logs/Homebrew /Library/Caches/Homebrew}
+  end
+  Dir.chdir(ENV['HOME']) do
+    Dir.glob('.*').each do |file|
+      if File.symlink?(file)
+        File.unlink(file)
+      end
+    end
+  end
+  #FileUtils.rm_rf(File.expand_path('~/src/oh-my-zsh/'))
+  #FileUtils.rm_rf(File.expand_path('~/Applications/*'))
+  system %Q{chsh -s `which bash`}
+end
 
 def putc(*args)
   puts "\e[1;31m#{args.join(' ')}\e[m"
@@ -198,8 +236,4 @@ def replace_file(file, prefix = ".", path = ENV["HOME"])
 	link_file(file)
 end
 
-def run(cmd)
-	putc "[Running] #{cmd}"
-	return sh cmd unless ENV['DEBUG']
-end
 
