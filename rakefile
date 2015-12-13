@@ -111,6 +111,9 @@ end
 desc "configure iterm: color, fonts and more"
 task :iterm do |cask|
 	putc task.comment
+
+	# iTerm2 prefs are cached; this reloads them
+	sh("defaults read com.googlecode.iterm2")
 end
 
 desc "Installing XCode command-line tools"
@@ -124,6 +127,14 @@ task :xcode do |task|
     end
   end
 end
+
+desc "install iTerm2 fonts"
+task :fonts => [:cask] do  |tasks|
+	putc task.comment
+	brew "tap caskroom/fonts"
+	cask "install font-hack"
+end
+
 
 desc "Change shell to zsh"
 task :zsh => [:brew] do |task|
@@ -185,5 +196,10 @@ end
 def replace_file(file, prefix = ".", path = ENV["HOME"])
 	system %Q{rm -rf "#{path}/#{prefix}#{file.sub(/\.erb$/, '')}"}
 	link_file(file)
+end
+
+def run(cmd)
+	putc "[Running] #{cmd}"
+	return sh cmd unless ENV['DEBUG']
 end
 
