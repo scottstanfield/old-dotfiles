@@ -4,7 +4,7 @@ if defined? Rake::TaskManager.record_task_metadata
   Rake::TaskManager.record_task_metadata = true
 end
 
-DEST = "#{ENV['HOME']}/home"      # normally just ENV['HOME']
+DEST = "#{ENV['HOME']}"      # normally just ENV['HOME']
 Rake.verbose(false)     # prevent `sh` command from echoing
 Rake.nowrite(false)     # don't actually run the `sh` command
 
