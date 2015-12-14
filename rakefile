@@ -5,8 +5,8 @@ if defined? Rake::TaskManager.record_task_metadata
 end
 
 DEST = "#{ENV['HOME']}/home"			# normally just ENV['HOME']
-Rake.verbose(true)			# prevent `sh` command from echoing
-Rake.nowrite(true)			# don't actually run the `sh` command
+Rake.verbose(false)			# prevent `sh` command from echoing
+Rake.nowrite(false)			# don't actually run the `sh` command
 
 desc "install all the things!"
 task :install do
@@ -17,6 +17,18 @@ task :default do
   Rake::application.options.show_tasks = :tasks  
   Rake::application.options.show_task_pattern = //
   Rake::application.display_tasks_and_comments
+end
+
+desc "get version numbers of all the existing main apps"
+task :inspect do |task|
+	putc task.comment
+	eatcmd("R --version | head -1 && which R")
+	eatcmd("brew --version && which brew")
+	eatcmd("java -version && which java")
+	eatcmd("zsh --version && which zsh")
+	eatcmd("vim --version | head -1 && which node")
+	eatcmd("node --version && which node")
+	eatcmd("ruby --version && which ruby")
 end
 
 desc "link the hidden dotfiles"
@@ -101,12 +113,7 @@ task :cask_packages do |task|
     betterzipql
     dropbox
     iterm2
-    mailplane mojibar
-    pgadmin3
-    qlcolorcode qlimagesize quicklook-csv quicklook-json qlmarkdown qlstephen
 		qlcolorcode qlstephen qlmarkdown quicklook-json qlprettypatch quicklook-csv betterzipql qlimagesize webpquicklook suspicious-package
-    time-sink textexpander
-    vagrant virtualbox
   ))
 end
 
@@ -115,7 +122,7 @@ task :iterm do |cask|
 	putc task.comment
 
 	# iTerm2 prefs are cached; this reloads them
-	sh("defaults read com.googlecode.iterm2")
+	# sh("defaults read com.googlecode.iterm2")
 end
 
 desc "Installing XCode command-line tools"
@@ -136,7 +143,6 @@ task :fonts => [:cask] do  |tasks|
 	brew "tap caskroom/fonts"
 	cask "install font-hack"
 end
-
 
 desc "Change shell to zsh"
 task :zsh => [:brew] do |task|
@@ -218,6 +224,10 @@ def putc(*args)
   puts "\e[1;31m#{args.join(' ')}\e[m"
 end
 
+def putx(*args)
+  puts "\e[47m#{args.join(' ')}\e[m"
+end
+
 def brew(*args)
   sh %Q{brew install #{args.join(' ')}}
 end
@@ -236,4 +246,11 @@ def replace_file(file, prefix = ".", path = ENV["HOME"])
 	link_file(file)
 end
 
-
+def eatcmd(cmd)
+	putx(cmd)
+	sh "#{cmd}" do |ok, res|
+		if !ok
+			putc("#{cmd.split.first} not installed")
+		end
+	end
+end

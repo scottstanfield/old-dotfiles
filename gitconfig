@@ -1,0 +1,49 @@
+[user]
+	email = scott@vertigo.com
+	name = Scott Stanfield
+[core]
+	autocrlf = input
+	excludesfile = /Users/scott/.gitignore
+[color "diff"]
+	meta = yellow
+	frag = cyan
+	old = red
+	new = green
+[color]
+	ui = true
+[push]
+	default = simple
+[credential]
+	helper = osxkeychain
+[hub]
+	protocol = https
+[merge]
+	tool = p4merge
+	keepBackup = false
+[mergetool "p4merge"]
+	cmd = p4merge "$BASE" "$LOCAL" "$REMOTE" "$MERGED"
+	keepTemporaries = false
+	trustExitCode = false
+	keepBackup = false
+[mergetool "sourcetree"]
+	cmd = /Applications/p4merge.app/Contents/MacOS/p4merge \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+	trustExitCode = true
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[alias]
+	co = checkout
+	cob = checkout -b
+	cm = !git add -A && git commit -m
+	up = !git pull --rebase --prune $@ && git submodule update --init --recursive
+	save = !git add -A && git commit -m 'SAVEPOINT'
+	undo = reset HEAD~1 --mixed
+	amend = commit -a --amend
+	wipe = !git add -A && git commit -qm 'WIPE SAVEPOINT' && git reset HEAD~1 --hard
+	workflow = !open http://haacked.com/archive/2014/07/28/github-flow-aliases/
+	bclean = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs git branch -d; }; f"
+	bdone = "!f() { git checkout ${1-master} && git up && git bclean ${1-master}; }; f"
+
+
+[branch]
+	autosetuprebase = always
