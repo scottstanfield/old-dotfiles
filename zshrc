@@ -74,7 +74,9 @@ my_paths
 export LANG=en_US.UTF-8
 
 # NVM to manage Node
-export NVM_DIR=~/.nvm
-source $(brew --prefix nvm)/nvm.sh
+if [[ -d $(brew --prefix nvm)/nvm.sh ]]; then
+	export NVM_DIR=~/.nvm
+	source $(brew --prefix nvm)/nvm.sh
+fi
 
 
