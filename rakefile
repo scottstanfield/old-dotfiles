@@ -86,7 +86,7 @@ desc "install brew packages"
 task :brew_packages => [:brew] do |task|
   putc task.comment
   brew(*%w(cowsay git wget gist hub 
-       tree p7zip
+       tree p7zip coreutils
        source-highlight zsh vim the_silver_searcher))
 end
 
@@ -166,12 +166,18 @@ desc "Install vim plugins"
 task :vim_plug do |task|
   putc task.comment
 
+	# Task depends on wget being installed
+	if !eatcmd("wget --version | head -1", false) 
+		putc("wget needs installation before vim_plug can run")
+		exit
+	end
+
   # Create ~/.vim folder
-  FileUtils.mkdir_p "#{DEST}/.vim"
+  FileUtils.mkdir_p "#{DEST}/.vim/autoload"
   
   # Download plugin
   url = "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-  command = "wget -q #{url} -O #{DEST}/.vim/plug.vim"
+  command = "wget -q #{url} -O #{DEST}/.vim/autoload/plug.vim"
   sh command do |ok, res|
     if ! ok
       puts "Download of #{url} failed with exit code: #{res.exitstatus}"
@@ -237,20 +243,22 @@ def cask(*args)
 end
 
 def link_file(file, prefix, path = DEST)
-  puts "linking #{path}/#{prefix}#{file}"
-  system %Q{ln -s "$PWD/#{file}" "#{path}/#{prefix}#{file}"}
+  sh %Q{ln -s "$PWD/#{file}" "#{path}/#{prefix}#{file}"}
 end
 
-def replace_file(file, prefix = ".", path = ENV["HOME"])
-  system %Q{rm -rf "#{path}/#{prefix}#{file.sub(/\.erb$/, '')}"}
-  link_file(file)
+def replace_file(file, prefix = ".", path = DEST)
+  sh %Q{rm -rf "#{path}/#{prefix}#{file}"}
+  link_file(file, prefix, path)
 end
 
-def eatcmd(cmd)
-  putx(cmd)
-  sh "#{cmd}" do |ok, res|
-    if !ok
+def eatcmd(cmd, verbose=true)
+  putx(cmd) if verbose
+	ok = 0
+  sh "#{cmd}" do |_ok, res|
+    if !_ok
       putc("#{cmd.split.first} not installed")
     end
+		ok = _ok
   end
+	return ok
 end
