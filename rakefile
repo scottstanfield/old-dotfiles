@@ -26,7 +26,7 @@ task :inspect do |task|
 	eatcmd("brew --version && which brew")
 	eatcmd("java -version && which java")
 	eatcmd("zsh --version && which zsh")
-	eatcmd("vim --version | head -1 && which node")
+	eatcmd("vim --version | head -1 && which vim")
 	eatcmd("node --version && which node")
 	eatcmd("ruby --version && which ruby")
 end
