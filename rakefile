@@ -4,41 +4,41 @@ if defined? Rake::TaskManager.record_task_metadata
   Rake::TaskManager.record_task_metadata = true
 end
 
-DEST = "#{ENV['HOME']}/home"			# normally just ENV['HOME']
-Rake.verbose(false)			# prevent `sh` command from echoing
-Rake.nowrite(false)			# don't actually run the `sh` command
+DEST = "#{ENV['HOME']}/home"      # normally just ENV['HOME']
+Rake.verbose(false)     # prevent `sh` command from echoing
+Rake.nowrite(false)     # don't actually run the `sh` command
 
 desc "install all the things!"
 task :install do
-	sh 'cowsay finished'
+  sh 'cowsay finished'
 end
 
 task :default do
-  Rake::application.options.show_tasks = :tasks  
+  Rake::application.options.show_tasks = :tasks
   Rake::application.options.show_task_pattern = //
   Rake::application.display_tasks_and_comments
 end
 
 desc "get version numbers of all the existing main apps"
 task :inspect do |task|
-	putc task.comment
-	eatcmd("R --version | head -1 && which R")
-	eatcmd("brew --version && which brew")
-	eatcmd("java -version && which java")
-	eatcmd("zsh --version && which zsh")
-	eatcmd("vim --version | head -1 && which vim")
-	eatcmd("node --version && which node")
-	eatcmd("ruby --version && which ruby")
+  putc task.comment
+  eatcmd("R --version | head -1 && which R")
+  eatcmd("brew --version && which brew")
+  eatcmd("java -version && which java")
+  eatcmd("zsh --version && which zsh")
+  eatcmd("vim --version | head -1 && which vim")
+  eatcmd("node --version && which node")
+  eatcmd("ruby --version && which ruby")
 end
 
 desc "link the hidden dotfiles"
 task :dotfiles do |task|
-	putc task.comment
+  putc task.comment
 
   replace_all  = false
   files        = Dir['*'] - %w[.git .gitignore oh-my-zsh default-gems Rakefile README.md LICENSE]
   files = Rake::FileList["*"].exclude(/rake/i)
-	files.exclude(*%w[readme.md .git .gitignore])
+  files.exclude(*%w[readme.md .git .gitignore])
 
   files.each do |file|
     if File.exist?(File.join(DEST, ".#{file.sub(/\.erb$/, '')}"))
@@ -68,85 +68,85 @@ end
 
 desc "Install R and RStudio"
 task :rlanguage do |task|
-	putc task.comment
+  putc task.comment
 
 end
 
 task :brew => [:xcode] do |task|
-	putc task.comment
-	sh "brew -v" do |ok, res|
-		if ! ok
-			puts "brew not found, installing:"
-			sh %Q{ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/linuxbrew/go/install)"}
-		end
-	end
+  putc task.comment
+  sh "brew -v" do |ok, res|
+    if ! ok
+      puts "brew not found, installing:"
+      sh %Q{ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/linuxbrew/go/install)"}
+    end
+  end
 end
 
 desc "install brew packages"
 task :brew_packages => [:brew] do |task|
-	putc task.comment
+  putc task.comment
   brew(*%w(cowsay git wget gist hub 
-			 tree p7zip
-			 source-highlight zsh vim the_silver_searcher))
+       tree p7zip
+       source-highlight zsh vim the_silver_searcher))
 end
 
 desc "install node"
 task :node => [:brew] do |task|
-	putc task.comment
-	brew("node n")
+  putc task.comment
+  brew("node n")
 end
 
 desc "install cask"
 task :cask => [:brew] do |task|
-	putc task.comment
+  putc task.comment
   brew(*%w(caskroom/cask/brew-cask))
 end
 
 desc "install cask packages"
 task :cask_packages do |task|
-	putc task.comment
+  putc task.comment
   cask(*%w(
-	  google-chrome
-		onepassword
-		java
+    google-chrome
+    onepassword
+    java
     atom
     betterzipql
     dropbox
     iterm2
-		qlcolorcode qlstephen qlmarkdown quicklook-json qlprettypatch quicklook-csv betterzipql qlimagesize webpquicklook suspicious-package
+    qlcolorcode qlstephen qlmarkdown quicklook-json qlprettypatch quicklook-csv betterzipql qlimagesize webpquicklook suspicious-package
   ))
 end
 
 desc "configure iterm: color, fonts and more"
 task :iterm do |cask|
-	putc task.comment
+  putc task.comment
 
-	# iTerm2 prefs are cached; this reloads them
-	# sh("defaults read com.googlecode.iterm2")
+  # iTerm2 prefs are cached; this reloads them
+  # sh("defaults read com.googlecode.iterm2")
 end
 
 desc "Installing XCode command-line tools"
 task :xcode do |task|
-	putc task.comment
-	# If running xcode-select fails to give version, it's not installed
+  putc task.comment
+  # If running xcode-select fails to give version, it's not installed
   sh "xcode-select -v" do |ok, res|
     if ! ok
-			puts "xcode not found, installing:"
-			# sh("xcode-select --install")
+      puts "xcode not found, installing:"
+      # sh("xcode-select --install")
     end
   end
 end
 
 desc "install iTerm2 fonts"
 task :fonts => [:cask] do  |tasks|
-	putc task.comment
-	brew "tap caskroom/fonts"
-	cask "install font-hack"
+  putc task.comment
+  brew "tap caskroom/fonts"
+  cask "install font-hack"
 end
 
 desc "Change shell to zsh"
 task :zsh => [:brew] do |task|
-	putc task.comment
+  putc task.comment
   if ENV['SHELL'] !~ /zsh/
     brew('zsh')
     zsh = `command -v zsh`
@@ -157,19 +157,19 @@ end
 
 desc "Install ruby"
 task :ruby => [:brew] do |task|  
-	putc task.comment
-	# http://ryanbigg.com/2015/06/mac-os-x-ruby-ruby-install-chruby-and-you/
-	brew("ruby-install chruby")
+  putc task.comment
+  # http://ryanbigg.com/2015/06/mac-os-x-ruby-ruby-install-chruby-and-you/
+  brew("ruby-install chruby")
 end
 
 desc "Install vim plugins"
 task :vim_plug do |task|
-	putc task.comment
+  putc task.comment
 
-	# Create ~/.vim folder
-	FileUtils.mkdir_p "#{DEST}/.vim"
-	
-	# Download plugin
+  # Create ~/.vim folder
+  FileUtils.mkdir_p "#{DEST}/.vim"
+  
+  # Download plugin
   url = "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
   command = "wget -q #{url} -O #{DEST}/.vim/plug.vim"
   sh command do |ok, res|
@@ -178,24 +178,24 @@ task :vim_plug do |task|
     end
   end
 
-	# Launch vim to load plugins
-	sh "vim +PlugInstall +qall"
+  # Launch vim to load plugins
+  sh "vim +PlugInstall +qall"
 end
 
 desc "remove everything"
 task :uninstall do
-	putc "Are you sure you want to remove everything? If so, type 'yes'"
-	case $stdin.gets.chomp
-	when 'n'
-		exit
-	when 'yes'
-		remove_everything()
-	end
+  putc "Are you sure you want to remove everything? If so, type 'yes'"
+  case $stdin.gets.chomp
+  when 'n'
+    exit
+  when 'yes'
+    remove_everything()
+  end
 
 end
 
 def remove_everything()
-	putc "removing everything!"
+  putc "removing everything!"
 
   Dir.chdir(`brew --prefix`.chomp) do
     system %Q{git checkout master}
@@ -237,20 +237,20 @@ def cask(*args)
 end
 
 def link_file(file, prefix, path = DEST)
-	puts "linking #{path}/#{prefix}#{file}"
-	system %Q{ln -s "$PWD/#{file}" "#{path}/#{prefix}#{file}"}
+  puts "linking #{path}/#{prefix}#{file}"
+  system %Q{ln -s "$PWD/#{file}" "#{path}/#{prefix}#{file}"}
 end
 
 def replace_file(file, prefix = ".", path = ENV["HOME"])
-	system %Q{rm -rf "#{path}/#{prefix}#{file.sub(/\.erb$/, '')}"}
-	link_file(file)
+  system %Q{rm -rf "#{path}/#{prefix}#{file.sub(/\.erb$/, '')}"}
+  link_file(file)
 end
 
 def eatcmd(cmd)
-	putx(cmd)
-	sh "#{cmd}" do |ok, res|
-		if !ok
-			putc("#{cmd.split.first} not installed")
-		end
-	end
+  putx(cmd)
+  sh "#{cmd}" do |ok, res|
+    if !ok
+      putc("#{cmd.split.first} not installed")
+    end
+  end
 end
