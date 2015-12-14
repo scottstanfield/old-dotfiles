@@ -406,22 +406,22 @@ if executable('ag')
 endif
 
 " Colors (solarized) {{
-    let g:solarized_contrast="high"     
-    let g:solarized_visibility="high"
-    call togglebg#map("<leader>x")          " ,x toggles dark/light
+    " let g:solarized_contrast="high"     
+    " let g:solarized_visibility="high"
+    " call togglebg#map("<leader>x")          " ,x toggles dark/light
 
-    let profile = $ITERM_PROFILE
-    if profile ==? 'solarized-dark'
-        set background=dark                 " light | dark
-        hi colorcolumn ctermbg=darkgrey
-    else
-        set background=light
-        hi colorcolumn ctermbg=lightgrey
-    endif
-    colorscheme solarized
-    "  Remove next line comment to force dark color scheme.
-    "  Usually it's picked because iTerm2 will pass it in.
-    " setenv ITERM_PROFILE solarized-dark
+    " let profile = $ITERM_PROFILE
+    " if profile ==? 'solarized-dark'
+    "     set background=dark                 " light | dark
+    "     hi colorcolumn ctermbg=darkgrey
+    " else
+    "     set background=light
+    "     hi colorcolumn ctermbg=lightgrey
+    " endif
+    " colorscheme solarized
+    " "  Remove next line comment to force dark color scheme.
+    " "  Usually it's picked because iTerm2 will pass it in.
+    " " setenv ITERM_PROFILE solarized-dark
 " }}
 
 " Auto Commands autocmds {{

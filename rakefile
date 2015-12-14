@@ -8,8 +8,9 @@ DEST = "#{ENV['HOME']}"      # normally just ENV['HOME']
 Rake.verbose(false)     # prevent `sh` command from echoing
 Rake.nowrite(false)     # don't actually run the `sh` command
 
+
 desc "install all the things!"
-task :install do
+task :install => [:brew_packages, :dotfiles, :zsh, :cask_packages]  do
   sh 'cowsay finished'
 end
 
@@ -72,6 +73,7 @@ task :rlanguage do |task|
 
 end
 
+desc "install brew"
 task :brew => [:xcode] do |task|
   putc task.comment
   sh "brew -v" do |ok, res|
@@ -103,18 +105,18 @@ task :cask => [:brew] do |task|
 end
 
 desc "install cask packages"
-task :cask_packages do |task|
+task :cask_packages => [:cask] do |task|
   putc task.comment
-  cask(*%w(
-    google-chrome
-    onepassword
-    java
-    atom
-    betterzipql
-    dropbox
-    iterm2
-    qlcolorcode qlstephen qlmarkdown quicklook-json qlprettypatch quicklook-csv betterzipql qlimagesize webpquicklook suspicious-package
-  ))
+  cask(*%w( google-chrome 1password java atom
+    betterzipql dropbox iterm2
+    qlcolorcode qlstephen qlmarkdown quicklook-json qlprettypatch 
+		quicklook-csv betterzipql qlimagesize webpquicklook suspicious-package))
+end
+
+desc "install Java"
+task :java do |task|
+  putc task.comment
+  putc "not implemented yet"
 end
 
 desc "configure iterm: color, fonts and more"
@@ -239,7 +241,7 @@ def brew(*args)
 end
 
 def cask(*args)
-  sh %{brew cask install #{args.join(' ')}}
+  sh %Q{brew cask install #{args.join(' ')}}
 end
 
 def link_file(file, prefix, path = DEST)
