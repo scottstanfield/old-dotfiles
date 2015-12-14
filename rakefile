@@ -14,6 +14,8 @@ task :install => [:brew_packages, :dotfiles, :zsh, :cask_packages]  do
   sh 'cowsay finished'
 end
 
+task :languages => [:java, :R, :node]
+
 task :default do
   Rake::application.options.show_tasks = :tasks
   Rake::application.options.show_task_pattern = //
@@ -30,6 +32,13 @@ task :inspect do |task|
   eatcmd("vim --version | head -1 && which vim")
   eatcmd("node --version && which node")
   eatcmd("ruby --version && which ruby")
+end
+
+desc "update brew and cask"
+task :update do |task|
+  putc task.comment
+  sh 'brew update && brew upgrade brew-cask && brew cleanup && brew cask cleanup'
+  sh 'brew doctor'
 end
 
 desc "link the hidden dotfiles"
@@ -68,9 +77,12 @@ task :dotfiles do |task|
 end
 
 desc "Install R and RStudio"
-task :rlanguage do |task|
+task :R do |task|
   putc task.comment
-
+  cask('xquartz')
+  sh "brew tap homebrew/science"
+  brew("R")
+  cask("rstudio")
 end
 
 desc "install brew"
@@ -107,18 +119,11 @@ end
 desc "install cask packages"
 task :cask_packages => [:cask] do |task|
   putc task.comment
-  cask(*%w( google-chrome 1password java atom
+  cask(*%w( 1password atom
     betterzipql dropbox iterm2
     qlcolorcode qlstephen qlmarkdown quicklook-json qlprettypatch 
 		quicklook-csv betterzipql qlimagesize webpquicklook suspicious-package))
 end
-
-desc "install Java"
-task :java do |task|
-  putc task.comment
-  putc "not implemented yet"
-end
-
 desc "configure iterm: color, fonts and more"
 task :iterm do |cask|
   putc task.comment
@@ -189,6 +194,15 @@ task :vim_plug do |task|
   # Launch vim to load plugins
   sh "vim +PlugInstall +qall"
 end
+
+# Optional tasks
+
+desc "install Java"
+task :java do |task|
+  putc task.comment
+  cask('java')
+end
+
 
 desc "remove everything"
 task :uninstall do
