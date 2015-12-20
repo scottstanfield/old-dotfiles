@@ -14,7 +14,7 @@ task :install => [:brew_packages, :dotfiles, :zsh, :cask_packages]  do
   sh 'cowsay finished'
 end
 
-task :languages => [:java, :R, :node]
+task :languages => [:java, :R, :node, :ruby]
 
 task :default do
   Rake::application.options.show_tasks = :tasks
@@ -39,6 +39,12 @@ task :update do |task|
   putc task.comment
   sh 'brew update && brew upgrade brew-cask && brew cleanup && brew cask cleanup'
   sh 'brew doctor'
+end
+
+desc "manage libraries and shared files"
+task :lib do |task|
+  putc task.comment
+
 end
 
 desc "link the hidden dotfiles"
@@ -105,7 +111,7 @@ task :brew_packages => [:brew] do |task|
 end
 
 desc "install node"
-task :node => [:brew] do |task|
+task :node do |task|
   putc task.comment
   brew("node n")
 end
@@ -121,8 +127,10 @@ task :cask_packages => [:cask] do |task|
   putc task.comment
   cask(*%w( 1password atom
     betterzipql dropbox iterm2
+    karabiner
+    slack
     qlcolorcode qlstephen qlmarkdown quicklook-json qlprettypatch 
-		quicklook-csv betterzipql qlimagesize webpquicklook suspicious-package))
+		quicklook-csv betterzipql qlimagesize webpquicklook ))
 end
 desc "configure iterm: color, fonts and more"
 task :iterm do |cask|
@@ -163,7 +171,7 @@ task :zsh => [:brew] do |task|
 end
 
 desc "Install ruby"
-task :ruby => [:brew] do |task|  
+task :ruby => do |task|  
   putc task.comment
   # http://ryanbigg.com/2015/06/mac-os-x-ruby-ruby-install-chruby-and-you/
   brew("ruby-install chruby")
