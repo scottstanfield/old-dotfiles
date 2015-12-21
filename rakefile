@@ -55,6 +55,7 @@ task :dotfiles do |task|
   files        = Dir['*'] - %w[.git .gitignore oh-my-zsh default-gems Rakefile README.md LICENSE]
   files = Rake::FileList["*"].exclude(/rake/i)
   files.exclude(*%w[readme.md .git .gitignore])
+  putc files
 
   files.each do |file|
     if File.exist?(File.join(DEST, ".#{file.sub(/\.erb$/, '')}"))
@@ -171,7 +172,7 @@ task :zsh => [:brew] do |task|
 end
 
 desc "Install ruby"
-task :ruby => do |task|  
+task :ruby do |task|  
   putc task.comment
   # http://ryanbigg.com/2015/06/mac-os-x-ruby-ruby-install-chruby-and-you/
   brew("ruby-install chruby")
