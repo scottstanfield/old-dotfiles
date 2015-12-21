@@ -132,6 +132,15 @@ task :cask_packages => [:cask] do |task|
     qlcolorcode qlstephen qlmarkdown quicklook-json qlprettypatch 
 		quicklook-csv betterzipql qlimagesize webpquicklook ))
 end
+
+desc "install Spectacle to manage windows"
+task :spectacle do |task|
+  putc task.comment
+  cask("spectacle")
+  sh "support/spectacle-defaults.sh"
+end
+
+
 desc "configure iterm: color, fonts and more"
 task :iterm do |cask|
   putc task.comment
