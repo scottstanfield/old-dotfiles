@@ -52,8 +52,8 @@ task :dotfiles do |task|
   putc task.comment
 
   replace_all  = false
-  files        = Dir['*'] - %w[.git .gitignore oh-my-zsh default-gems readme.md LICENSE support/*]
-  files = Rake::FileList["*"].exclude(/rake/i)
+  files        = FileList['*'] - %w[.git .gitignore oh-my-zsh default-gems readme.md LICENSE support]
+  files.exclude(/rake/i)
   putc files
 
   files.each do |file|
