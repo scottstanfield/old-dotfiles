@@ -3,16 +3,16 @@
 	name = Scott Stanfield
 [core]
 	autocrlf = input
-	excludesfile = /Users/scott/.gitignore
+	excludesfile = ~/.gitignore
 [color "diff"]
 	meta = yellow
 	frag = cyan
 	old = red
 	new = green
 [color]
-	ui = true
+	ui = auto
 [push]
-	default = simple
+	default = tracking
 [credential]
 	helper = osxkeychain
 [hub]
@@ -44,6 +44,8 @@
 	bclean = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs git branch -d; }; f"
 	bdone = "!f() { git checkout ${1-master} && git up && git bclean ${1-master}; }; f"
 
-
 [branch]
 	autosetuprebase = always
+	autosetupmerge = true
+[diff]
+	mnemonicprefix = true

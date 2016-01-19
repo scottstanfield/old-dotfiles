@@ -129,6 +129,7 @@ task :cask_packages => [:cask] do |task|
     betterzipql dropbox iterm2
     karabiner
     slack
+		rowanj-gitx
     qlcolorcode qlstephen qlmarkdown quicklook-json qlprettypatch 
 		quicklook-csv betterzipql qlimagesize webpquicklook ))
 end

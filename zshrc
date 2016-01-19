@@ -6,6 +6,7 @@
 #
 
 # Path to your zclean installation
+
 export ZCLEAN=$HOME/dotfiles/zclean
 export ZSH=$ZCLEAN/oh-my-zsh
 

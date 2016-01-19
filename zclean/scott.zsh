@@ -8,7 +8,7 @@ alias vit="vi ~/.tmux.conf"
 alias viz="vi ~/zclean/scott.zsh"
 alias soz="source ~/zclean/scott.zsh"
 alias hg="history -1000 | grep "
-
+alias g='git'
 
 setopt interactive_comments  # allows these # comments in shell; good for copy/paste
 setopt pushd_ignore_dups     # skip duplicate dirs when you usse pushd

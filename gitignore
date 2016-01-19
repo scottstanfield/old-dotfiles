@@ -1,1 +1,45 @@
+# OS X
+######
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+Icon?
+
+# Packages
+##########
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Node
+######
+logs
+*.logs
+npm-debug.log*
+.grunt
+node_modules
+.npm
+build/Release
+
+# Python
+########
+__pycache__/
+*.py[cod]
+.ipynb_checkpionts
+
+# R
+###
+.Rhistory
+.Rapp.history
+.RData
+.Rproj.user/
+.httr-ouath
+
