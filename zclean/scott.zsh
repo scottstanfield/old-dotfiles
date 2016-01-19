@@ -2,7 +2,7 @@ is_mac() { [[ $OSTYPE == darwin* ]] }
 
 export EDITOR=vim
 
-alias vz="vi ~/.zshrc"
+alias vz="vi ~/.vimrc"
 alias sz="source ~/.zshrc"
 alias vit="vi ~/.tmux.conf"
 alias viz="vi ~/zclean/scott.zsh"
