@@ -41,10 +41,10 @@ task :update do |task|
   sh 'brew doctor'
 end
 
-desc "manage libraries and shared files"
+desc "link lib and bin folders to root"
 task :lib do |task|
   putc task.comment
-
+  # sh %Q{ln -s "$PWD/#{file}" "#{path}/#{prefix}#{file}"}
 end
 
 desc "link the hidden dotfiles"
@@ -125,8 +125,12 @@ end
 desc "install cask packages"
 task :cask_packages => [:cask] do |task|
   putc task.comment
-  cask(*%w( 1password atom
-    betterzipql dropbox iterm2
+  cask(*%w( 
+	  1password 
+		atom
+    betterzipql 
+		dropbox 
+		iterm2
     karabiner
     slack
 		rowanj-gitx
