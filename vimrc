@@ -108,7 +108,7 @@ endif
 
     inoremap <F9> <C-O>za
     noremap <F9> za
-    vnoremap <space> zf             " wrap a visual block with a fold
+    " vnoremap <space> zf             " wrap a visual block with a fold
     " nnoremap <space> za             " toggle fold with space
     " noremap <leader>f za
 	"
@@ -337,6 +337,9 @@ au BufEnter *.py set ai sw=4 ts=4 sta et fo=croql
 
 	Plug 'tpope/vim-sensible'
 
+	Plug 'vim-scripts/Vim-R-plugin'
+
+	Plug 'kshenoy/vim-signature'
 	Plug 'zaiste/tmux.vim'
 	Plug 'vim-scripts/dbext.vim'
     Plug 'tpope/vim-markdown'
@@ -349,8 +352,6 @@ au BufEnter *.py set ai sw=4 ts=4 sta et fo=croql
     Plug 'groenewege/vim-less'
     Plug 'wavded/vim-stylus'
     Plug 'puppetlabs/puppet-syntax-vim'
-
-	Plug 'hwartig/vim-seeing-is-believing', {'for': 'ruby'}
 
     Plug 'tpope/vim-commentary'
     " comment out with the 'gc' command
@@ -431,21 +432,6 @@ augroup sql
 	au!
 	autocmd BufRead *.sql DBSetOption profile=sqlite
 augroup end
-
-augroup seeing-is-believing
-	autocmd!
-
-	autocmd FileType ruby nmap <buffer> <leader>zm <Plug>(seeing-is-believing-mark)
-	autocmd FileType ruby xmap <buffer> <leader>zm <Plug>(seeing-is-believing-mark)
-	autocmd FileType ruby imap <buffer> <leader>zm <Plug>(seeing-is-believing-mark)
-
-	autocmd FileType ruby nmap <buffer> <leader>zr <Plug>(seeing-is-believing-run)
-	autocmd FileType ruby imap <buffer> <leader>zr <Plug>(seeing-is-believing-run)
-
-	autocmd FileType ruby nmap <buffer> <leader>zc <Plug>(seeing-is-believing-clean)
-	autocmd FileType ruby xmap <buffer> <leader>zc <Plug>(seeing-is-believing-clean)
-	autocmd FileType ruby imap <buffer> <leader>zc <Plug>(seeing-is-believing-clean)
-augroup END
 
 
 " Wrapping autocmd in a group per http://bit.ly/15wKRrM
