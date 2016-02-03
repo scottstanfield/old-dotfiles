@@ -50,7 +50,7 @@ endif
 
 " UI {{
     let loaded_matchparen = 1       " Just use % instead of auto paren matching
-    set colorcolumn=80            " vertical line at 80 cols
+    " set colorcolumn=80            " vertical line at 80 cols
     set nostartofline               " Searches leave cursor on same column
     set ignorecase                  " Case-insensitive searching.
     set lazyredraw                  " No redraw during macro execution
@@ -78,7 +78,6 @@ endif
     set softtabstop=4
     set shiftwidth=4        " no clue what this does
     set shiftround          " if spaces, TAB maps to right spot
-
 
     " set fo+=c             " Auto-wrap comments, inserting comment leader
     " set fo+=t               " Auto-wrap text using textwidth
@@ -202,8 +201,6 @@ endif
     " nnoremap <leader>m :silent !open -a MacDown.app '%:p'<cr> :redraw!<cr>
 
 "    nnoremap <leader>r gq}               " *r*eformat current paragraph
-
-    nmap <leader>r ggVGg?           " ROT13 is fun!
 
     " Show cursor column marker
     nnoremap <leader>c :set cursorcolumn!<CR>
@@ -337,7 +334,9 @@ au BufEnter *.py set ai sw=4 ts=4 sta et fo=croql
 
 	Plug 'tpope/vim-sensible'
 
-	Plug 'vim-scripts/Vim-R-plugin'
+	Plug 'jcfaria/Vim-R-plugin'
+	Plug 'jalvesaq/R-Vim-runtime'
+	let vimrplugin_assign = 0  " disable the mapping of _ to ->
 
 	Plug 'kshenoy/vim-signature'
 	Plug 'zaiste/tmux.vim'
@@ -448,6 +447,7 @@ augroup my_au
     au FileType javascript set ts=4|set shiftwidth=4|set expandtab
     au FileType coffee setlocal ts=2 shiftwidth=2 shiftwidth=2 expandtab
 	au Filetype drake set ts=2 softtabstop=2 shiftwidth=2 expandtab
+	au FileType r set ts=2 softtabstop=2 shiftwidth=2 expandtab
 
     au BufEnter *.tsv set tabstop=14 softtabstop=14 shiftwidth=14 noexpandtab
 
@@ -544,7 +544,7 @@ nmap <leader>f :call Formd("-f")<CR>
 
 " Set cursor to underscore in insertmode 
 
-if $TERM_PROGRAM =~ "iTerm"
+if $TERM_PROGRAM =~ "iTerm.app"
     let &t_SI = "\<Esc>]50;CursorShape=2\x7" " 1 = vertical bar; 2 = underscore
     let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
 endif
@@ -553,5 +553,11 @@ endif
 noremap <c-s> :w<CR>
 imap <c-s> <Esc>:w<CR>a
 imap <c-s> <Esc><c-s>
+
+"R Script settings
+vmap <space> <Plug>RDSendSelection
+nmap <space> <Plug>RDSendLine
+let vimrplugin_applescript=0
+let vimrplugin_vsplit=1
 
 
