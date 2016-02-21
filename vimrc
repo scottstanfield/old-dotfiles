@@ -90,6 +90,8 @@ endif
     " Change tabs to spaces, or the other way around. Good for Python!
     nmap <leader>1 :set et<cr>:retab<cr>
     nmap <leader>2 :set noet<cr>:retab!<cr>
+	" remove trailing spaces
+	
 
     set pastetoggle=<F2>            " --INSERT (paste)-- means safe for formatted text
 
@@ -485,6 +487,7 @@ function! TrimWhiteSpace()
     %s/\s\+$//e
 endfunction
 autocmd BufWritePre *.py :call TrimWhiteSpace()
+autocmd BufWritePre *.R :call TrimWhiteSpace()
 
 nnoremap <leader>$ :silent call TrimWhiteSpace()<CR>
 
