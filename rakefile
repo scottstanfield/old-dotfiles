@@ -106,7 +106,7 @@ desc "install brew packages"
 task :brew_packages => [:brew] do |task|
   putc task.comment
   brew(*%w(cowsay git wget gist hub 
-       tree p7zip coreutils
+       tree p7zip coreutils diff-so-fancy
        source-highlight zsh vim the_silver_searcher))
 end
 
