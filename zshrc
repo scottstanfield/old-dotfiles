@@ -59,7 +59,7 @@ function my_paths {
 	path=($^path(N))
 }
 
-plugins=(zsh-syntax-highlighting)
+plugins=(zsh-syntax-highlighting aws)
 source $ZSH/oh-my-zsh.sh
 
 # Load all of the config files in ~/oh-my-zsh that end in .zsh

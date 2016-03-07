@@ -374,7 +374,7 @@ au BufEnter *.py set ai sw=4 ts=4 sta et fo=croql
 	"	let g:airline_section_c = airline#section#create(['fo: %{&fo} tw: %{&tw} wm: %{&wm} ts: %{&ts} et: %{&et} sw: %{&sw}'])
 
     " shows git diff marks in the gutter
-    " Plug 'airblade/vim-gitgutter'
+    Plug 'airblade/vim-gitgutter'
 
     Plug 'mattn/emmet-vim'
     let g:user_emmet_leader_key = '<c-e>'
