@@ -253,6 +253,8 @@ endif
 
     nnoremap <C-j> <C-d>
     nnoremap <C-k> <C-u>
+    vnoremap <C-j> <C-d>
+    vnoremap <C-k> <C-u>
 	nnoremap <space> <C-d>
 	nnoremap <C-space> <C-u>
 
