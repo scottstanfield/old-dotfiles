@@ -1,0 +1,4 @@
+CC=gcc-5 -fopenmp
+CXX=g++-5 -fopenmp
+CFLAGS=-g -O3 -mtune=native
+CXXFLAGS=-g -O3 -mtune=native

@@ -366,6 +366,7 @@ au BufEnter *.py set ai sw=4 ts=4 sta et fo=croql
     let g:syntastic_javascript_checkers = ['jshint']
     let g:syntastic_error_symbol = '✗'
     let g:syntastic_warning_symbol='⚠'
+	let g:syntastic_python_python_exec = '/usr/local/bin/python3'
     " let g:syntastic_auto_jump=1
     " nnoremap <leader>js :w<CR>:make<CR>:cw<CR>
 
@@ -565,4 +566,5 @@ nmap <space> <Plug>RDSendLine
 let vimrplugin_applescript=0
 let vimrplugin_vsplit=1
 
+highlight Search term=bold ctermbg=225 guibg=LightMagenta
 

@@ -1,0 +1,2 @@
+alias gd='git diff '
+
