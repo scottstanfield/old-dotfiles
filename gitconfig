@@ -1,5 +1,5 @@
 [user]
-	email = scott@vertigo.com
+	email = scott@e9.ai
 	name = Scott Stanfield
 [core]
 	autocrlf = input
@@ -45,6 +45,9 @@
 	bdone = "!f() { git checkout ${1-master} && git up && git bclean ${1-master}; }; f"
 	dsf = "!git diff --color $@ | diff-so-fancy"
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit 
+
+	delete-remote-stale-branches = !git branch -r --merged origin/master | sed -e 's/origin\\///' | grep -v master | xargs -p -n 1 git push origin --delete
+	list-remote-stale-branches = !git branch -r --merged origin/master | sed -e 's/origin\\///' | grep -v master 
 
 [branch]
 	autosetuprebase = always

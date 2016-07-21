@@ -38,25 +38,20 @@ function my_paths {
 
 	# GNU PATH: confirm with $ brew --prefix coreutils
 	if [[ -d /usr/local/opt/coreutils/libexec ]]; then # GNU coreutils are installed; use them
-		manpath=(/usr/local/opt/coreutils/libexec/gnuman $manpath)
+		manpath+=/usr/local/opt/coreutils/libexec/gnuman
 		path=(/usr/local/opt/coreutils/libexec/gnubin $path)
 	fi
 
 	# npm binaries (get the path from npm bin -g
 	if [[ -d /usr/local/share/npm/bin ]]; then
-		path=(/usr/local/share/npm/bin $path)
+		path+=/usr/local/share/npm/bin
 	fi
-
 
 	path=(${HOME}/bin /usr/local/bin /usr/local/sbin $path .)
 
-	path=($path '/Users/scott/context/tex/texmf-osx-64/bin' )
-
-	# Anaconda distribution of Python
-	path=('/Users/scott/anaconda/bin' $path)
-
 	# Remove duplicates
 	path=($^path(N))
+	export PATH
 }
 
 plugins=(zsh-syntax-highlighting aws)
@@ -69,7 +64,11 @@ for config_file ($ZCLEAN/*.zsh); do
 done
 
 my_highlights
-my_paths
+
+# If we're in a TMUX window, the parent .zshrc has already been run
+#if [[ -z $TMUX ]]; then
+ 	my_paths
+#fi
 
 # VARIABLES
 export LANG=en_US.UTF-8
@@ -80,4 +79,6 @@ if [[ -d $(brew --prefix nvm)/nvm.sh ]]; then
 	source $(brew --prefix nvm)/nvm.sh
 fi
 
+export LDFLAGS=-L/usr/local/opt/readline/lib
+export CPPFLAGS=-I/usr/local/opt/readline/include
 

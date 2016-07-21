@@ -1,4 +1,4 @@
-" Notes and Modeline {{
+" Notes and Modeline g
 "   vim: set fo-=or colorcolumn=100
 "   Tips compiled from
 "   http://items.sjbach.com/319/configuring-vim-right
@@ -10,9 +10,9 @@
 "   Also: https://github.com/holman/dotfiles/blob/master/vim/vimrc.symlink
 "   Also: Annoying vim features: http://www.jrwz.net/technical/vi/mytips.html
 "   Don't use the bare *map feature: http://bit.ly/YMAHNv
-" }}
+" 
 "
-" Basics {{
+" Basics g
     set nocompatible                " be iMproved
     syntax on                       " Enable syntax highlighting
     let mapleader = ","             " Our free key to prefix custom commands
@@ -20,9 +20,9 @@
     set hidden                      " switch buffers w/o saving
     set encoding=utf-8
   set shell=/bin/sh
-" }}
+" 
 
-" General {{
+" General g
     set nobackup                    " don't let vim backup files
     set noswapfile
     set nowritebackup               " And again.
@@ -39,7 +39,7 @@
 
     " After searching with /, hitting <leader>/ toggles highlight
     nnoremap <silent> <leader>/ :set hlsearch! hlsearch?<CR>
-" }}
+" 
 
 
 if has('gui_running')
@@ -48,7 +48,7 @@ if has('gui_running')
     set columns=100
 endif
 
-" UI {{
+" UI g
     let loaded_matchparen = 1       " Just use % instead of auto paren matching
     " set colorcolumn=80            " vertical line at 80 cols
     set nostartofline               " Searches leave cursor on same column
@@ -68,10 +68,10 @@ endif
     " Open new split panes to the right and bottom, which feels more natural
     set splitbelow
     set splitright
-" }}
+" 
 
 
-" Indenting and tabs {{
+" Indenting and tabs g
     set smartindent         " be smart about it
     set nowrap              " do not wrap lines please
     set tabstop=4
@@ -90,57 +90,15 @@ endif
     " Change tabs to spaces, or the other way around. Good for Python!
     nmap <leader>1 :set et<cr>:retab<cr>
     nmap <leader>2 :set noet<cr>:retab!<cr>
-	" remove trailing spaces
-	
+    " remove trailing spaces
 
     set pastetoggle=<F2>            " --INSERT (paste)-- means safe for formatted text
 
-    " nnoremap <leader>o :set paste<CR>:put *<CR>:set nopaste<CR>
-" }}
+    nnoremap <leader>o :set paste<CR>:put *<CR>:set nopaste<CR>
+" 
 
-" Folding {{
-    set foldenable                  " turn on folding
-    set foldmarker={{,}}            " fold on a single brace
-    set foldmethod=marker           " fold on the marker above
-    set foldlevel=100               " don't autofold anything
-    set foldopen=block,hor,tag      " what movements open folds
-    set foldopen+=percent,mark
-    set foldopen+=quickfix""{{
 
-    inoremap <F9> <C-O>za
-    noremap <F9> za
-    " vnoremap <space> zf             " wrap a visual block with a fold
-    " nnoremap <space> za             " toggle fold with space
-    " noremap <leader>f za
-	"
-	
-    nnoremap <F10> :silent call ToggleFold()<CR>
-    "nnoremap <leader>fc zM          " close all folds
-    "nnoremap <leader>fo zR          " open all folds
-
-    " gf is built in and will "Goto File"
-    " gb is the opposite, will "Go Back"
-    nnoremap gb <C-o>
-
-    " From https://github.com/vim-scripts/Efficient-python-folding
-    let b:folded = 1
-    function! ToggleFold()
-        if( b:folded == 0 )
-            exec "normal! zM"
-            let b:folded = 1
-        else
-            exec "normal! zR"
-            let b:folded =0
-        endif
-    endfunction
-
-    function! SimpleFoldText()
-        return getline(v:foldstart).' '
-    endfunction " }
-    set foldtext=SimpleFoldText()
-" }}
-
-" Buffer Management {{
+" Buffer Management g
 
     " I never really used buffers so I removed these commands
     " nnoremap L :bnext<CR>
@@ -151,11 +109,9 @@ endif
     nnoremap <silent> <S-Left> :wincmd h<CR>
     nnoremap <silent> <S-Right> :wincmd l<CR>
 
-" }}
+" 
 
-" Mapping {{
-
-
+" Mapping g
     " Make it easier to (make it easier to (make it easier to (edit text)))
     nnoremap <leader>vi :split $MYVIMRC<cr>
     nnoremap <leader>vs :source $MYVIMRC<cr>
@@ -214,21 +170,17 @@ endif
     ab [cmd] ⌘
     ab [shift] ⇧
     ab [option] ⌥
-    ab [opt] ⌥
     ab [ctrl] ⌃
     ab [tab] ⇥
     ab [section] §
     ab [lozenge] ◊
     ab [interpunct] ·
     ab [reference] ※
-    ab [em]  
-    ab [en]  
     ab [ellipse] …     
     ab [bar] ―
-    ab [la] ←
-    ab [ra] →
+    ab [left] ←
+    ab [right] →
     ab [pi] π
-
 
     " Toggle invisible whiteSpace ¬ ¶
     nnoremap <leader>i :set list!<CR>
@@ -248,6 +200,9 @@ endif
     nnoremap <leader>w :w<CR>
     nnoremap <C-s> :w<CR>
 
+    " Capital Y copies to the EOL
+    nnoremap <S-y> y$
+
     " select all text in current buffer (like Command-A)
     noremap <leader>a ggVG
 
@@ -255,8 +210,8 @@ endif
     nnoremap <C-k> <C-u>
     vnoremap <C-j> <C-d>
     vnoremap <C-k> <C-u>
-	nnoremap <space> <C-d>
-	nnoremap <C-space> <C-u>
+    nnoremap <space> <C-d>
+    nnoremap <C-space> <C-u>
 
     nnoremap <leader>b <C-w>l
 
@@ -280,12 +235,13 @@ endif
     inoremap <S-Tab> <C-P>
 
     " Execute buffer in Python
-    nnoremap <leader>p :w<CR>:!/usr/bin/env python % <CR>
+    nnoremap <leader>p :w<CR>:!driver.sh <CR>
+    " nnoremap <leader>p :w<CR>:!/usr/bin/env python3 % --test <CR>
     " nnoremap <leader>p :w<CR>:!/usr/bin/env awk -f % data.csv <CR>
     " nnoremap <leader>p :w<CR>:!/usr/bin/env node % <CR>
-" }}
+" 
 
-" Skeleton files with todo templates {{
+" Skeleton files with todo templates g
 "use .vim/skel/template.html template for editing new files that match *.html
 " au! BufNewFile * silent! 0r ~/.vim/skel/template.%:e
 
@@ -298,17 +254,16 @@ endfunction
 " Jump between %VAR% placeholders in Insert mode with <Ctrl-p>
 inoremap <c-p> <ESC>/%\u.\{-1,}%<cr>c/%/
 nnoremap <c-p> /%\u.\{-1,}%<cr>c/%/e<cr>
-" }}
+" 
 
-" Filetypes {{
+" Filetypes g
 " Automatically insert line breaks in text files
 " au BufEnter *.txt setl tx fo+=n2a linebreak
 
 " au BufNewFile,BufRead *.jade set filetype=jade
-au BufEnter *.py set ai sw=4 ts=4 sta et fo=croql
-" }}
+" 
 
-" Tabbed Windows {{
+" Tabbed Windows g
     nnoremap + :tabnew<CR>
     nnoremap <Tab> :tabn<CR>
     nnoremap <S-Tab> :tabp<CR>
@@ -322,29 +277,29 @@ au BufEnter *.py set ai sw=4 ts=4 sta et fo=croql
     noremap <leader>tf :tabfirst<cr>
     noremap <leader>tl :tablast<cr>
     noremap <leader>tm :tabmove
-" }}
+" 
 
-" Plugins {{
-	" Follow install directions here:
-	" https://github.com/junegunn/vim-plug
-	"
-	" if empty(glob('~/.vim/autoload/plug.vim'))
-	" 	silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-	" 		\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-	" 	autocmd VimEnter * PlugInstall | source $MYVIMRC
-	" endif
+" Plugins g
+    " Follow install directions here:
+    " https://github.com/junegunn/vim-plug
+    "
+    " if empty(glob('~/.vim/autoload/plug.vim'))
+    "   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    "       \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    "   autocmd VimEnter * PlugInstall | source $MYVIMRC
+    " endif
 
-	call plug#begin('~/.vim/plugged')
+    call plug#begin('~/.vim/plugged')
 
-	Plug 'tpope/vim-sensible'
+    Plug 'tpope/vim-sensible'
 
-	Plug 'jcfaria/Vim-R-plugin'
-	Plug 'jalvesaq/R-Vim-runtime'
-	let vimrplugin_assign = 0  " disable the mapping of _ to ->
+    Plug 'jcfaria/Vim-R-plugin'
+    Plug 'jalvesaq/R-Vim-runtime'
+    let vimrplugin_assign = 0  " disable the mapping of _ to ->
 
-	Plug 'kshenoy/vim-signature'
-	Plug 'zaiste/tmux.vim'
-	Plug 'vim-scripts/dbext.vim'
+    Plug 'kshenoy/vim-signature'
+    Plug 'zaiste/tmux.vim'
+    Plug 'vim-scripts/dbext.vim'
     Plug 'tpope/vim-markdown'
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-repeat'
@@ -360,25 +315,26 @@ au BufEnter *.py set ai sw=4 ts=4 sta et fo=croql
     " comment out with the 'gc' command
     Plug 'mileszs/ack.vim'
 
-	Plug 'https://bitbucket.org/larsyencken/vim-drake-syntax.git'
+    Plug 'https://bitbucket.org/larsyencken/vim-drake-syntax.git'
 
     Plug 'scrooloose/syntastic'
     let g:syntastic_javascript_checkers = ['jshint']
     let g:syntastic_error_symbol = '✗'
     let g:syntastic_warning_symbol='⚠'
-	let g:syntastic_python_python_exec = '/usr/local/bin/python3'
+    let g:syntastic_python_python_exec = '/usr/local/bin/python3'
     " let g:syntastic_auto_jump=1
     " nnoremap <leader>js :w<CR>:make<CR>:cw<CR>
 
     Plug 'bling/vim-airline'
     let g:airline_powerline_fonts = 1
     let g:airline_theme = 'bubblegum'
-	" for debugging tab settings
-	"	let g:airline_section_c = airline#section#create(['fo: %{&fo} tw: %{&tw} wm: %{&wm} ts: %{&ts} et: %{&et} sw: %{&sw}'])
+    " for debugging tab settings
+    "   let g:airline_section_c = airline#section#create(['fo: %{&fo} tw: %{&tw} wm: %{&wm} ts: %{&ts} et: %{&et} sw: %{&sw}'])
 
     " shows git diff marks in the gutter
     Plug 'airblade/vim-gitgutter'
 
+	" Use ctrl+e, to expand html tags: https://github.com/mattn/emmet-vim
     Plug 'mattn/emmet-vim'
     let g:user_emmet_leader_key = '<c-e>'
 
@@ -396,9 +352,9 @@ au BufEnter *.py set ai sw=4 ts=4 sta et fo=croql
     Plug 'nathanaelkane/vim-indent-guides'
     nmap <silent> <leader>g <Plug>IndentGuidesToggle
 
-	call plug#end()
+    call plug#end()
 
-" }}
+" 
 
 " Use the Silver Searcher https://github.com/ggreer/the_silver_server
 " requires: brew install ag
@@ -410,7 +366,7 @@ if executable('ag')
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 endif
 
-" Colors (solarized) {{
+" Colors (solarized) g
     " let g:solarized_contrast="high"     
     " let g:solarized_visibility="high"
     " call togglebg#map("<leader>x")          " ,x toggles dark/light
@@ -427,22 +383,23 @@ endif
     " "  Remove next line comment to force dark color scheme.
     " "  Usually it's picked because iTerm2 will pass it in.
     " " setenv ITERM_PROFILE solarized-dark
-" }}
+" 
 
-" Auto Commands autocmds {{
+" Auto Commands autocmds g
 
 let g:dbext_default_profile_sqlite = 'type=SQLITE:dbname=cc3.db'
 augroup sql
-	au!
-	autocmd BufRead *.sql DBSetOption profile=sqlite
+    au!
+    autocmd BufRead *.sql DBSetOption profile=sqlite
 augroup end
 
 
 " Wrapping autocmd in a group per http://bit.ly/15wKRrM
 augroup my_au
     autocmd!
-    au FileType python setlocal noexpandtab
-	au FileType ruby setlocal ts=2 sw=2 sts=2
+    au FileType python setlocal expandtab ts=2 sw=2 sts=2
+    au FileType ruby setlocal ts=2 sw=2 sts=2
+	au FileType make setlocal noexpandtab
 
     " place this after plugins have loaded
     " Set textwidth like a boss http://blog.ezyang.com/2010/03/vim-textwidth/
@@ -451,8 +408,8 @@ augroup my_au
     au FileType stylus,jade set tabstop=2|set softtabstop=2|set shiftwidth=2|set expandtab
     au FileType javascript set ts=4|set shiftwidth=4|set expandtab
     au FileType coffee setlocal ts=2 shiftwidth=2 shiftwidth=2 expandtab
-	au Filetype drake set ts=2 softtabstop=2 shiftwidth=2 expandtab
-	au FileType r set ts=2 softtabstop=2 shiftwidth=2 expandtab
+    au Filetype drake set ts=2 softtabstop=2 shiftwidth=2 expandtab
+    au FileType r set ts=2 softtabstop=2 shiftwidth=2 expandtab
 
     au BufEnter *.tsv set tabstop=14 softtabstop=14 shiftwidth=14 noexpandtab
 
@@ -476,7 +433,7 @@ augroup my_au
     " Turn off line wrapping when working on HTML files
     au BufNewFile,BufRead *.html setlocal nowrap
 augroup END
-"}}
+"
 
 " highlight ExtraWhitespace ctermbg=red guibg=red
 " match ExtraWhitespace /\s\+$/
@@ -484,7 +441,6 @@ augroup END
 " autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 " autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 " autocmd BufWinLeave * call clearmatches()
-
 
 function! TrimWhiteSpace()
     %s/\s\+$//e
@@ -568,3 +524,7 @@ let vimrplugin_vsplit=1
 
 highlight Search term=bold ctermbg=225 guibg=LightMagenta
 
+" au BufEnter,BufRead *.py set ai sw=2 ts=2 sts=2 sta et fo=croql
+
+" PEP8 has defined the proper indentation for Python
+au BufNewFile,BufRead *.py set ts=4 sts=4 sw=4 tw=79 expandtab autoindent fileformat=unix
