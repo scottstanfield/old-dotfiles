@@ -43,9 +43,9 @@ function my_paths {
 	fi
 
 	# npm binaries (get the path from npm bin -g
-	if [[ -d /usr/local/share/npm/bin ]]; then
-		path+=/usr/local/share/npm/bin
-	fi
+	# if [[ -d /usr/local/share/npm/bin ]]; then
+	# 	path+=/usr/local/share/npm/bin
+	# fi
 
 	path=(${HOME}/bin /usr/local/bin /usr/local/sbin $path .)
 
@@ -74,11 +74,16 @@ my_highlights
 export LANG=en_US.UTF-8
 
 # NVM to manage Node
-if [[ -d $(brew --prefix nvm)/nvm.sh ]]; then
-	export NVM_DIR=~/.nvm
-	source $(brew --prefix nvm)/nvm.sh
-fi
+export NVM_DIR=~/.nvm
+. "$(brew --prefix nvm)/nvm.sh"
 
 export LDFLAGS=-L/usr/local/opt/readline/lib
 export CPPFLAGS=-I/usr/local/opt/readline/include
+export CXXFLAGS=-O3			# live on the edge
+
+export H2OSERVER=ss-imac.e9.ai
+
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+#bash activate() function activate() { export VIRTUAL_ENV_DISABLE_PROMPT='1' source ./env/bin/activate }
+function activate() { export VIRTUAL_ENV_DISABLE_PROMPT='1' source ./env/bin/activate }
 
