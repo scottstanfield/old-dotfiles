@@ -4,14 +4,14 @@ export EDITOR=vim
 
 function sst () {/usr/bin/ssh -t $@ "tmux attach || tmux new";}
 
-alias cp="cp -p"
+alias cp="cp -a"
 alias vimrc="vi ~/.config/nvim/init.vim"
 alias sz="source ~/.zshrc"
 alias vit="vi ~/.tmux.conf"
 alias viz="vi ~/zclean/scott.zsh"
 alias vi="nvim -p"
 alias soz="source ~/zclean/scott.zsh"
-alias hg="history -1000 | grep "
+alias hg="history -1000 | grep -i "
 alias g='git'
 
 function wgrep () {grep "\<$@\>"}
@@ -38,7 +38,7 @@ alias m="less"
 alias rm='nocorrect rm -vI'
 alias gs='git status 2>/dev/null'
 alias -- pd='pushd'
-alias ag="ag -i"            # make case insensitive searching the default
+alias ag="ag --smart-case --literal "            # make case insensitive searching the default
 
 # Automatically ls after you change directories (cd).
 # Comment out this function if it's annoying.

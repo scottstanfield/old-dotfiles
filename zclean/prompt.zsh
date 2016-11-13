@@ -137,7 +137,7 @@ function build_prompt {
         if [[ $display_tag_name == true && $is_on_a_tag == true ]]; then
             PS1="${PS1} ${yellow}[${tag_at_current_commit}]${reset}"
         fi
-        PS1="${PS1}      "
+        PS1="${PS1} "			# this is where you'd add more right side padding
     fi
     
     if [[ $two_lines == true && $is_a_git_repo == true ]]; then

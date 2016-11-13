@@ -44,9 +44,24 @@ violet=$CYAN
 branch_color=$BLUE
 reset=$RESET
 
-PROMPT='$green%m %{$fg_bold[green]%}%4~%{$fg_bold[red]%}%(?.. [%?]) ∙ '
-RPROMPT='$(build_prompt)'
-#RPROMPT='%{$reset_color%}%T %{$fg_bold[white]%} %n@%m%{$reset_color%}'
+
+function prompt_tail {
+    local B=''
+	if [[ `tput cols` -gt 60 ]]; then
+		B=$'∙'
+	else
+		B=$'\n∙'
+	fi
+	echo $B
+}
+
+function virtualenv_info {
+    [ $VIRTUAL_ENV ] && echo '%U'`basename $VIRTUAL_ENV`'%u'
+}
+
+PROMPT='$green%m %{$fg_bold[green]%}%4~%{$fg_bold[red]%}%(?.. [%?]) $(prompt_tail) '
+RPROMPT='$(build_prompt)$(virtualenv_info)'
+#RPROMPT='%{$reset_color%}{$fg_bold[white]%} %n@%m%{$reset_color%}'
 
 #ZSH_THEME_GIT_PROMPT_PREFIX="%{$reset_color%}- on %{$fg_bold[magenta]%}"
 #ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%} "
