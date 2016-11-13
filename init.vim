@@ -40,7 +40,6 @@ highlight Search term=bold ctermbg=225 guibg=LightMagenta
 " Older settings below
 """"""""""""""""""""""
 
-
 " General g
     set nobackup                    " don't let vim backup files
     set noswapfile
@@ -178,6 +177,7 @@ highlight Search term=bold ctermbg=225 guibg=LightMagenta
     ab [left] ←
     ab [right] →
     ab [pi] π
+	ab [shrug]  ¯\_(ツ)_/¯
 
     " Toggle invisible whiteSpace ¬ ¶
     nnoremap <leader>i :set list!<CR>
@@ -232,8 +232,8 @@ highlight Search term=bold ctermbg=225 guibg=LightMagenta
     inoremap <S-Tab> <C-P>
 
     " Execute buffer in Python
-    nnoremap <leader>p :w<CR>:!driver.sh <CR>
-    " nnoremap <leader>p :w<CR>:!/usr/bin/env python3 % --test <CR>
+    " nnoremap <leader>p :w<CR>:!driver.sh <CR>
+    nnoremap <leader>p :w<CR>:!python3 % --test <CR>
     " nnoremap <leader>p :w<CR>:!/usr/bin/env awk -f % data.csv <CR>
     " nnoremap <leader>p :w<CR>:!/usr/bin/env node % <CR>
 " 
@@ -289,6 +289,14 @@ nnoremap <c-p> /%\u.\{-1,}%<cr>c/%/e<cr>
     call plug#begin()
 
 	Plug 'tpope/vim-sensible'
+
+	Plug 'kassio/neoterm'
+
+	" Python
+	Plug 'neomake/neomake'
+	let g:neomake_python_enabled_makers = ['flake8', 'pep8', 'vulture']
+	let g:neomake_python_flake8_maker = { 'args': ['--ignore=E302,E501'], }
+	autocmd! BufWritePost * Neomake
 
 	" For R language
 	Plug 'jalvesaq/Nvim-r',   { 'for': 'r' }
@@ -501,3 +509,36 @@ highlight Search term=bold ctermbg=225 guibg=LightMagenta
 
 " PEP8 has defined the proper indentation for Python
 au BufNewFile,BufRead *.py set ts=4 sts=4 sw=4 tw=79 expandtab fileformat=unix
+
+
+" Neoterm settings
+nnoremap <silent> ,yd :call neoterm#close()<cr>
+nnoremap <silent> ,yl :call neoterm#clear()<cr>
+nnoremap <silent> ,yc :call neoterm#kill()<cr>
+
+" iTerm2 send control-enter <C-Enter> so I have it's profile
+" send the Maltese cross instead. 
+" https://stackoverflow.com/questions/5388562/cant-map-s-cr-in-vim
+nnoremap <silent> ✠ :TREPLSendLine<cr>j
+inoremap <silent> ✠ <ESC>:TREPLSendLine<cr>A
+vnoremap <silent> ✠ :TREPLSendSelection<cr>gv
+
+" Easily get out of Terminal mode
+tnoremap <Esc> <C-\><C-n>
+tnoremap <Esc><Esc> <C-\><C-n><C-w>k
+
+" Some tips for making relative line numbers good in VIM
+" http://jeffkreeftmeijer.com/2012/relative-line-numbers-in-vim-for-super-fast-movement/
+
+function! NumberToggle()
+  if(&relativenumber == 1)
+    set norelativenumber
+  else
+    set relativenumber
+  endif
+endfunc
+
+nnoremap <C-n> :call NumberToggle()<cr>
+"au InsertEnter * :set norelativenumber
+"au InsertLeave * :set relativenumber
+
