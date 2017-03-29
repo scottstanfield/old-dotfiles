@@ -1,5 +1,8 @@
 is_mac() { [[ $OSTYPE == darwin* ]] }
 
+
+ht() { (head $1 && echo "---" && tail $1) | less }
+
 export EDITOR=vim
 
 function sst () {/usr/bin/ssh -t $@ "tmux attach || tmux new";}
@@ -13,6 +16,7 @@ alias vi="nvim -p"
 alias soz="source ~/zclean/scott.zsh"
 alias hg="history -1000 | grep -i "
 alias g='git'
+alias bc='bc -l'
 
 function wgrep () {grep "\<$@\>"}
 

@@ -47,7 +47,10 @@ function my_paths {
 	# 	path+=/usr/local/share/npm/bin
 	# fi
 
-	path=(${HOME}/bin /usr/local/bin /usr/local/sbin $path .)
+	path=(${HOME}/bin /usr/local/bin /usr/local/sbin $path . )
+
+	# for node binaries (so you don't need to install --globally)
+	path=($path ./node_modules/.bin)
 
 	# Remove duplicates
 	path=($^path(N))
@@ -87,3 +90,5 @@ export VIRTUAL_ENV_DISABLE_PROMPT=1
 #bash activate() function activate() { export VIRTUAL_ENV_DISABLE_PROMPT='1' source ./env/bin/activate }
 function activate() { export VIRTUAL_ENV_DISABLE_PROMPT='1' source ./env/bin/activate }
 
+export R_LIBS="/home/scott/R/library"
+export MODEL="kelly1"
